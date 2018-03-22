@@ -23,7 +23,7 @@ from CalculateSOCtoRange import CalculateRange
 #%%
 form_class = uic.loadUiType("RoutePlannerUI.ui")[0]
 
-
+#%% Class
 class gui(QMainWindow, form_class):
     def __init__(self):
         super().__init__()

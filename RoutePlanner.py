@@ -21,6 +21,7 @@ from CalculateSOCtoRange import CalculateRange
 
 
 #%%
+#Class
 form_class = uic.loadUiType("RoutePlannerUI.ui")[0]
 
 

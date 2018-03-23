@@ -7,6 +7,7 @@ Created on Sat Nov 18 10:18:55 2017
 import googlemaps
 from datetime import datetime
 import time
+import os
 from math import sin, cos, sqrt, atan2, radians
 import folium
 from folium.plugins import Draw
@@ -34,9 +35,16 @@ class gui(QMainWindow, form_class):
         self.pushButton.clicked.connect(self.btn_clicked)
         self.pushButton_2.clicked.connect(self.btn_clicked2)
         self.pushButton_3.clicked.connect(self.btn_clicked3)
-
+        path = os.getcwd()
+        self.webView.setUrl(QUrl('file:///'+path+'/temp/RoutePlanner.html'))
         
+        
+#        self.webView.settings().setUserStyleSheetUrl(QUrl.fromLocalFile("file:///"+path + "/temp/RoutePlanner.html"))
+#        self.webView.setUrl(QUrl("www.google.com"))
+#        self.webView.reload()
+        print(("file:///"+path + "/temp/RoutePlanner.html"))
         self.progressBar.setValue(0)
+
         
              
     def btn_clicked(self):
@@ -45,6 +53,7 @@ class gui(QMainWindow, form_class):
         end = self.lineEdit_2.text()
         radius = CalculateRange(self.comboBox.currentIndex(),self.lineEdit_3.text())
         print(self.lineEdit_3.text())
+        path = os.getcwd()
 
         self.lcdNumber.display(radius)
         
@@ -52,10 +61,12 @@ class gui(QMainWindow, form_class):
             self.textBrowser.append("Please write SOC 0 to 100")
         else:
 
-            self.textBrowser.append("Route is generated")  
+              
             self.mapping(start,end,radius,1)
             self.webView.setUrl(QUrl('temp\RoutePlanner.html'))
             self.webView.reload()
+            print(path+"temp\RoutePlanner.html")
+            self.textBrowser.append("Route is generated")
         self.progressBar.setValue(100)
         
     def btn_clicked2(self):
@@ -71,7 +82,7 @@ class gui(QMainWindow, form_class):
         else:
             self.textBrowser.append("Available Chargers are displayed")
             self.mapping(start,end,radius,2)
-            self.webView.setUrl(QUrl('temp\RoutePlanner.html'))
+            self.webView.setUrl(QUrl('file:///E:/003_GitProject/RoutePlanner/temp/RoutePlanner.html'))
             self.webView.reload()
         self.progressBar.setValue(100)
         
@@ -113,7 +124,7 @@ class gui(QMainWindow, form_class):
         
         
         draw = Draw()
-        draw.add_to(m) # 그림기능
+        draw.add_to(m)
         
         #folium.TileLayer('Mapbox Control Room').add_to(m) # 여러가지 타일들 "Mapbox Bright"
         #folium.TileLayer('Stamen Toner').add_to(m)
@@ -211,7 +222,7 @@ class gui(QMainWindow, form_class):
                 StartToElecCharg = folium.PolyLine(locations=[DecodedPos[1:]],color='green',weight=5).add_to(m)    
                 attr = {'fill': '#421100', 'font-weight': 'bold', 'font-size': '48'}
                 folium.plugins.PolyLineTextPath(StartToElecCharg,text='\u00BB    ',repeat=True,center = True,
-                        offset=16,attributes=attr).add_to(m) # 색깔 그림 폰트 등등 라인꾸미기    
+                        offset=16,attributes=attr).add_to(m) # Color, font
     
                 #Electric charger to end
                 directions_result = gmaps.directions(ElecLocStr,end, mode="driving", departure_time=now)     
@@ -230,7 +241,7 @@ class gui(QMainWindow, form_class):
                 marker_cluster = folium.plugins.MarkerCluster(
                 locations=data, popups=['lon:{}<br>lat:{}'.format(lon, lat) for (lat, lon) in data],
                 name='EVcharger',overlay=True,control=False,icon_create_function=None)
-                marker_cluster.add_to(m)# 너무 느려서 봉인(여러가지 설정 가능한 마커)
+                marker_cluster.add_to(m)# 
                 '''
 
         
